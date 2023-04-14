@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "1070110726717",
+    "project_id": "augmented-reality-d1087",
+    "storage_bucket": "augmented-reality-d1087.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1070110726717:android:4ace52b730f227c8cf2854",
+        "android_client_info": {
+          "package_name": "com.example.augmented_reality"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1070110726717-hu2311ljvep71hauq1pfb48171pmvho6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBF5mYquVNQd4jfJsyj_DzltDSCdxh_Ek0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1070110726717-hu2311ljvep71hauq1pfb48171pmvho6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1070110726717:android:51e4705c2891fae0cf2854",
+        "android_client_info": {
+          "package_name": "com.example.login_flutter"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1070110726717-hu2311ljvep71hauq1pfb48171pmvho6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBF5mYquVNQd4jfJsyj_DzltDSCdxh_Ek0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1070110726717-hu2311ljvep71hauq1pfb48171pmvho6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
