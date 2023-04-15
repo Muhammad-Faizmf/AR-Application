@@ -34,10 +34,9 @@ class _MyAppState extends State<MyApp> {
 
   Future<bool> CheckLoginStatus() async {
     String? value = await storage.read(key: "uid");
-    if(value == null){
+    if (value == null) {
       return false;
-    }
-    else {
+    } else {
       return true;
     }
   }
@@ -47,61 +46,55 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return FutureBuilder(
       builder: (context, snapshot) {
-        if(snapshot.hasError){
+        if (snapshot.hasError) {
           print("Something Went Wrong");
-        }
-        else if(snapshot.connectionState == ConnectionState.waiting){
+        } else if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(
             child: CircularProgressIndicator(),
           );
         }
         return Sizer(
-          builder: (context, orientation, deviceType)=>
-          GetMaterialApp(
-          title: 'Augmented Reality',
-          theme: ThemeData(
-            primarySwatch: Colors.blue,
-          ),
-          debugShowCheckedModeBanner: false,
-          home: FutureBuilder(
-            future: CheckLoginStatus(),
-            builder: 
-            (BuildContext context, AsyncSnapshot<bool> snapshot){
-              if(snapshot.data == false){
-                return const SplashScreen(); // splashscreen()
-              }
-              else if(snapshot.connectionState == ConnectionState.waiting){
-                return Container(
-                  color: Colors.white,
-                  // ignore: prefer_const_constructors
-                  child: Center(
-                    child: const SpinKitFadingCircle(
-                    color: Colors.red,
+            builder: (context, orientation, deviceType) => GetMaterialApp(
+                  title: 'Augmented Reality',
+                  theme: ThemeData(
+                    primarySwatch: Colors.blue,
                   ),
-                  )
-                  );
-              }
-              return const Home(); // Home()
-            }
-            ),
-          )
-        );
-      }, 
+                  defaultTransition: Transition.leftToRightWithFade,
+                  transitionDuration: const Duration(milliseconds: 200),
+                  debugShowCheckedModeBanner: false,
+                  home: FutureBuilder(
+                      future: CheckLoginStatus(),
+                      builder:
+                          (BuildContext context, AsyncSnapshot<bool> snapshot) {
+                        if (snapshot.data == false) {
+                          return const SplashScreen(); // splashscreen()
+                        } else if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return Container(
+                              color: Colors.white,
+                              // ignore: prefer_const_constructors
+                              child: Center(
+                                child: const SpinKitFadingCircle(
+                                  color: Colors.red,
+                                ),
+                              ));
+                        }
+                        return const Home(); // Home()
+                      }),
+                ));
+      },
     );
   }
 
-   showDialog(){
+  showDialog() {
     Get.defaultDialog(
-      title: "",
-      content: Column(
-        children: const [
+        title: "",
+        content: Column(children: const [
           SpinKitFadingCircle(
             color: Colors.red,
           ),
           SizedBox(height: 20.0),
           Text("Please Wait...")
-        ]
-      )
-    );
+        ]));
   }
 }

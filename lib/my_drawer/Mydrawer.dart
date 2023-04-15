@@ -73,6 +73,7 @@ class _MyDrawerState extends State<MyDrawer> {
               style: TextStyle(fontSize: 20.0),
             ),
             onTap: () {
+              Navigator.pop(context);
               Get.to(()=>const Orders());
             },
           ),
