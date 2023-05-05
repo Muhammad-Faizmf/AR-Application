@@ -1,6 +1,6 @@
 
 
-// ignore_for_file: unnecessary_null_comparison
+// ignore_for_file: unnecessary_null_comparison, use_build_context_synchronously
 
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -98,39 +98,40 @@ class _SignupPageState extends State<SignupPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        backgroundColor: Colors.grey[700],
-        title: const Text("Create an Account"),
-        leading: IconButton(
-          onPressed: (){
-            Navigator.pushAndRemoveUntil(
-              context, MaterialPageRoute(
-                builder: (context) => const LoginPage()),
-              (route) => false
-            );
-          },
-          icon: const Icon(Icons.arrow_back),
-        ),
-      ),
-      body: Padding(
+      // appBar: AppBar(
+      //   centerTitle: true,
+      //   backgroundColor: Colors.grey[700],
+      //   title: const Text("Create an Account"),
+      //   leading: IconButton(
+      //     onPressed: (){
+      //       Navigator.pushAndRemoveUntil(
+      //         context, MaterialPageRoute(
+      //           builder: (context) => const LoginPage()),
+      //         (route) => false
+      //       );
+      //     },
+      //     icon: const Icon(Icons.arrow_back),
+      //   ),
+      // ),
+      body: SingleChildScrollView(
         padding: const EdgeInsets.all(20.0),
-        child: SingleChildScrollView(
+        child: SafeArea(
           child: Form(
             key: signup_controller.signup_key,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Container(
-                  padding: const EdgeInsets.only(top: 10),
-                  child: const Center(
-                    child: Text(
-                      "Welcome",
-                      style: TextStyle(
-                        fontSize: 30, fontWeight: FontWeight.bold),
-                    ),
-                  )),
-                const SizedBox(height: 30.0),
+                 Container(
+                  height: 200.0,
+                  margin: const EdgeInsets.symmetric(vertical: 10.0),
+                  child: const Image(
+                 image: AssetImage("images/welcome_image.jpg"),
+                 // fit: BoxFit.cover,
+                  ),
+                  ),
+                  const Text("Welcome Back", style: TextStyle(fontSize: 30.0, fontWeight: FontWeight.bold)),
+                  const Text("Create your account to start your journey.", style: TextStyle(fontSize: 20.0), textAlign: TextAlign.center,),
+                  const SizedBox(height: 15.0),
                 TextFormField(
                   keyboardType: TextInputType.emailAddress,
                   controller: signup_controller.emailController,
@@ -138,7 +139,8 @@ class _SignupPageState extends State<SignupPage> {
                     return signup_controller.validateEmail(value!);
                   },
                   decoration: InputDecoration(
-                    hintText: "Email",
+                    hintText: "E-Mail",
+                    label: const Text("E-Mail"),
                     prefixIcon: const Icon(Icons.person_outline_rounded),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(20.0))),
@@ -153,6 +155,7 @@ class _SignupPageState extends State<SignupPage> {
                   },
                   decoration: InputDecoration(
                     hintText: "Password",
+                    label: const Text("Password"),
                     prefixIcon: const Icon(Icons.lock_outline_rounded),
                     suffixIcon: IconButton(
                       onPressed: () {
@@ -182,6 +185,7 @@ class _SignupPageState extends State<SignupPage> {
                   },
                   decoration: InputDecoration(
                     hintText: "Confirm Password",
+                    label: const Text("Confirm Password"),
                     prefixIcon: const Icon(Icons.lock_outline_rounded),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(20.0),
@@ -209,14 +213,14 @@ class _SignupPageState extends State<SignupPage> {
                       ),
                       child: Container(
                         margin: const EdgeInsets.only(left: 8.0),
-                        child: const Text("Sign Up",
+                        child: const Text("SIGN UP",
                           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18.0,
                         color: Colors.black
                         ),),
                       )
                     ),
                 ),
-                const SizedBox(height: 18.0),
+                const SizedBox(height: 20.0),
                 const Align(
                   alignment: Alignment.center,
                   child: Text(
@@ -224,29 +228,26 @@ class _SignupPageState extends State<SignupPage> {
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                 ),
-                const SizedBox(height: 2.0),
-                Container(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Text(
-                        "Already have an account?",
-                        style: TextStyle(
-                          fontSize: 14,
-                        ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text(
+                      "Already have an account?",
+                      style: TextStyle(
+                        fontSize: 15,
                       ),
-                      TextButton(
-                          onPressed: () {
-                            Navigator.pushAndRemoveUntil(
-                            context, MaterialPageRoute(
-                              builder: (context) => const LoginPage()),
-                            (route) => false
-                          );
-                          },
-                          child: const Text("Login")
-                        )
-                    ],
-                  ),
+                    ),
+                    TextButton(
+                        onPressed: () {
+                          Navigator.pushAndRemoveUntil(
+                          context, MaterialPageRoute(
+                            builder: (context) => const LoginPage()),
+                          (route) => false
+                        );
+                        },
+                        child: const Text("Login")
+                      )
+                  ],
                 ),
               ],
             ),

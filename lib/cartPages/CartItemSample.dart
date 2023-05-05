@@ -1,6 +1,5 @@
 // ignore_for_file: prefer_const_constructors
 
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -22,7 +21,7 @@ class CartItemSample extends StatelessWidget {
     // db.doc(id).delete().then((value) => {});
     FirebaseFirestore.instance.collection('users').doc(FirebaseAuth.instance.currentUser!.email).collection('cartitems').doc(id).delete().then((value) => {});
   }
-
+  
   increaseCartItemQuantity(String id, image, String name, String price, int qty) async {
    itemcontroller.itemquanity.value = qty;
    itemcontroller.itemquanity.value++;
@@ -73,7 +72,7 @@ class CartItemSample extends StatelessWidget {
             for (var x = 0; x < storedoc.length; x++)...[
             Container(
               margin:
-                const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10.0),
+              const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10.0),
             padding: const EdgeInsets.all(10.0),
             height: 110,
             decoration: BoxDecoration(

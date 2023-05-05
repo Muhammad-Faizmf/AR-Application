@@ -27,6 +27,7 @@ class _ForgotPasswordState extends State<ForgotPage> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+            duration: Duration(seconds: 2),
           backgroundColor: Colors.orange,
           content: Text(
             "Reset Password Link is send to your Email ID. Please check it out.",
@@ -38,18 +39,17 @@ class _ForgotPasswordState extends State<ForgotPage> {
     );
     });
     showDialog();
+    forgotController.email.value = "";
     Future.delayed(Duration(seconds: 3),(){
-      Navigator.pushAndRemoveUntil(
-      context, MaterialPageRoute(
-        builder: (context) => LoginPage()),
-       (route) => false
-    );
+      Navigator.of(context).pop();
     });
    } on FirebaseAuthException catch (e) {
      if(e.code == "user-not-found"){
+      forgotController.email.value = "";
        ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+          duration: Duration(seconds: 1),
           backgroundColor: Colors.red,
           content: Text(
             "No user found.",
@@ -105,65 +105,68 @@ class _ForgotPasswordState extends State<ForgotPage> {
           icon: Icon(Icons.arrow_back),
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: SingleChildScrollView(
-          child: Form(
-            key: forgotController.forgotpawd_key,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  "Reset Link will be send to your Email ID: ",
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold
+      body: SingleChildScrollView(
+        padding: EdgeInsets.symmetric(horizontal:20.0, vertical: 80.0),
+        child: Form(
+          key: forgotController.forgotpawd_key,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SizedBox(
+                height: 150.0,
+                child: Image.asset("images/forgot_pwd_image.png", )),
+                SizedBox(height: 30.0),
+              Text(
+                "Reset Link will be send to your Email ID: ",
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold
+                ),
+              ),
+              SizedBox(height: 20.0),
+              TextFormField(
+                keyboardType: TextInputType.emailAddress,
+                controller: forgotController.EmailController,
+                decoration: InputDecoration(
+                  hintText: "Email",
+                  prefixIcon: const Icon(Icons.person_outline_rounded),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(20.0),
                   ),
-                ),
-                SizedBox(height: 20.0),
-                TextFormField(
-                  keyboardType: TextInputType.emailAddress,
-                  controller: forgotController.EmailController,
-                  decoration: InputDecoration(
-                    hintText: "Email",
-                    prefixIcon: const Icon(Icons.person_outline_rounded),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(20.0),
-                    ),
-                  ), 
-                  validator: (value){
-                    return forgotController.ValidateEmail(value!);
-                  },
-                ),
-                const SizedBox(height: 20.0),
-                GestureDetector(
-                  onTap: (){
-                    forgotController.checkForgotPassword();
-                    // check internet, then login
-                    if(forgotController.isformValidated == true){
-                      checkInternetConnection();
-                      forgotController.EmailController.clear();
-                    }
-                  },
-                  child: Container(
-                    height: 50,
-                    decoration: BoxDecoration(
-                      color: Colors.orange,
-                      borderRadius: BorderRadius.circular(20.0)
-                    ),
-                    child: Center(child: 
-                    Text(
-                      "RESET",
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold, fontSize: 18.0
-                        ),
-                      )
+                ), 
+                validator: (value){
+                  return forgotController.ValidateEmail(value!);
+                },
+              ),
+              const SizedBox(height: 20.0),
+              GestureDetector(
+                onTap: (){
+                  forgotController.checkForgotPassword();
+                  // check internet, then login
+                  if(forgotController.isformValidated == true){
+                    checkInternetConnection();
+                    forgotController.EmailController.clear();
+                  }
+                },
+                child: Container(
+                  height: 50,
+                  decoration: BoxDecoration(
+                    color: Colors.orange,
+                    borderRadius: BorderRadius.circular(20.0)
+                  ),
+                  child: Center(child: 
+                  Text(
+                    "RESET",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold, fontSize: 18.0
+                      ),
                     )
                   )
-                ),
-                SizedBox(height: 20.0),
-              ],
-            ),
+                )
+              ),
+              SizedBox(height: 20.0),
+            ],
           ),
         ),
       ),

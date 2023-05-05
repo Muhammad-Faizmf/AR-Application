@@ -27,9 +27,7 @@ class BuyProduct extends StatelessWidget {
          });
         });
      });
-
     print("cart items ${cartItemList[0]['name']}");
-    
     await FirebaseFirestore.instance.collection('orders').add({
       "email" : FirebaseAuth.instance.currentUser!.email, 
       "fullname" : fullname,
@@ -41,6 +39,16 @@ class BuyProduct extends StatelessWidget {
       "order_status" : "PENDING"
     });
     cartItemList.clear();
+  }
+
+  deleteAllcartItems() async {
+    var collection = FirebaseFirestore.instance.collection('users').doc(FirebaseAuth.instance.currentUser!.email).collection('cartitems');
+    var snapshots = await collection.get();
+    for (var doc in snapshots.docs) {
+    await doc.reference.delete();
+    cartcontroller.cartLength.value = 0;
+    cartcontroller.cartitemTotalCost.value = 0;
+  }
   }
 
   @override
@@ -152,12 +160,11 @@ class BuyProduct extends StatelessWidget {
             )),
           ),
           const SizedBox(height: 20.0),
-          InkWell(
-            onTap: () async {
+          Obx(()=>InkWell(
+             onTap: cartcontroller.cartLength.value != 0 ?  () async {
               buycontroller.orderNowClick();
               if (buycontroller.isformvalidated == true) {
                 await addOrdersToFirebase(buycontroller.name.value, buycontroller.address.value, buycontroller.mobileNo.value, buycontroller.city.value);
-
                 Get.defaultDialog(
                   title: "Product",
                   middleText: "Your order has been placed successfully and you will be contacted soon by the admin.",
@@ -171,28 +178,29 @@ class BuyProduct extends StatelessWidget {
                       buycontroller.addressController.clear();
                       buycontroller.cityController.clear();
                       buycontroller.isformvalidated = false;
+                      deleteAllcartItems();
                     },
                     child: const Text("OK")),
                 );
               }
-            },
+            } : null,
             child: Container(
               width: 370,
               margin: const EdgeInsets.only(left: 20.0, right: 15.0),
               padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 17.0),
               alignment: Alignment.center,
               decoration: BoxDecoration(
-                  color: const Color(0xffff7466),
+                  color: cartcontroller.cartLength.value != 0 ? const Color(0xffff7466) : Colors.grey,
                   borderRadius: BorderRadius.circular(10.0)),
-              child: const Text(
+              child: Text(
                 "Order Now",
                 style: TextStyle(
                   fontSize: 18.0,
                   fontWeight: FontWeight.bold,
-                  color: Colors.white),
+                  color:cartcontroller.cartLength.value != 0 ? Colors.white : Colors.grey[300]),
               ),
             ),
-          ),
+          )),
           const SizedBox(
             height: 20.0,
           ),

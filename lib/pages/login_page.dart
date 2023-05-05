@@ -80,8 +80,8 @@ class _LoginPageState extends State<LoginPage> {
         final googleAccountAuthentication = await signInAccount.authentication;
         try {
           final credential = GoogleAuthProvider.credential(
-              accessToken: googleAccountAuthentication.accessToken,
-              idToken: googleAccountAuthentication.idToken);
+            accessToken: googleAccountAuthentication.accessToken,
+            idToken: googleAccountAuthentication.idToken);
           UserCredential user = await auth.signInWithCredential(credential);
           showDialog();
           getLogin();
@@ -148,170 +148,172 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     print("login");
     return Scaffold(
-      body: Padding(
+      body: SingleChildScrollView(
         padding: const EdgeInsets.all(20.0),
-        child: SingleChildScrollView(
-          child: Form(
-            key: login_controller.loginkey,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                  margin: const EdgeInsets.symmetric(vertical: 20.0),
+        child: Form(
+          key: login_controller.loginkey,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                margin: const EdgeInsets.symmetric(vertical: 20.0),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(20.0),
                   child: const Image(
                     image: AssetImage("images/furniture.png"),
                     fit: BoxFit.cover,
                   ),
                 ),
-                TextFormField(
-                  keyboardType: TextInputType.emailAddress,
-                  controller: login_controller.EmailController,
-                  decoration: InputDecoration(
-                    hintText: "Email",
-                    prefixIcon: const Icon(Icons.person_outline_rounded),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(20.0),
+              ),
+              TextFormField(
+                keyboardType: TextInputType.emailAddress,
+                controller: login_controller.EmailController,
+                decoration: InputDecoration(
+                  hintText: "E-Mail",
+                  label: Text("E-Mail"),
+                  prefixIcon: const Icon(Icons.person_outline_rounded),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(20.0),
+                  ),
+                ),
+                validator: (value) {
+                  return login_controller.ValidateEmail(value!);
+                },
+              ),
+              const SizedBox(height: 20.0),
+              Obx(() => TextFormField(
+                    keyboardType: TextInputType.visiblePassword,
+                    obscureText: login_controller.ispasswordHidden.value,
+                    controller: login_controller.PasswordController,
+                    decoration: InputDecoration(
+                      hintText: "Password",
+                      label: Text("Password"),
+                      prefixIcon: const Icon(Icons.lock_outline_rounded),
+                      suffixIcon: IconButton(
+                        onPressed: () {
+                          login_controller.ispasswordHidden.value =
+                              !login_controller.ispasswordHidden.value;
+                        },
+                        icon: Icon(
+                          login_controller.ispasswordHidden.value
+                              ? Icons.visibility
+                              : Icons.visibility_off,
+                          color: Colors.grey,
+                        ),
+                      ),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20.0),
+                      ),
+                    ),
+                    validator: (value) {
+                      return login_controller.ValidatePassword(value!);
+                    },
+                  )),
+              Container(
+                alignment: Alignment.centerRight,
+                child: TextButton(
+                  onPressed: () {
+                    Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(builder: (context) => ForgotPage()),
+                        (route) => false);
+                  },
+                  child: const Text("Forgot Password?"),
+                ),
+              ),
+              const SizedBox(height: 5.0),
+              SizedBox(
+                height: 50.0,
+                width: double.infinity,
+                child: ElevatedButton(
+                    onPressed: () {
+                      login_controller.checkLogin();
+                      // check internet, then login
+                      if (login_controller.isformValidated == true) {
+                        checkInternetConnection();
+                      }
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.orange,
+                      side: const BorderSide(color: Colors.white),
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(20)),
+                      ),
+                    ),
+                    child: Container(
+                      margin: const EdgeInsets.only(left: 8.0),
+                      child: const Text(
+                        "LOGIN",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18.0,
+                            color: Colors.black),
+                      ),
+                    )),
+              ),
+              SizedBox(height: 20.0),
+              const Align(
+                alignment: Alignment.center,
+                child: Text(
+                  "OR",
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text(
+                    "Dont have an account?",
+                    style: TextStyle(
+                      fontSize: 14,
                     ),
                   ),
-                  validator: (value) {
-                    return login_controller.ValidateEmail(value!);
-                  },
-                ),
-                const SizedBox(height: 20.0),
-                Obx(() => TextFormField(
-                      keyboardType: TextInputType.visiblePassword,
-                      obscureText: login_controller.ispasswordHidden.value,
-                      controller: login_controller.PasswordController,
-                      decoration: InputDecoration(
-                        hintText: "Password",
-                        prefixIcon: const Icon(Icons.lock_outline_rounded),
-                        suffixIcon: IconButton(
-                          onPressed: () {
-                            login_controller.ispasswordHidden.value =
-                                !login_controller.ispasswordHidden.value;
-                          },
-                          icon: Icon(
-                            login_controller.ispasswordHidden.value
-                                ? Icons.visibility
-                                : Icons.visibility_off,
-                            color: Colors.grey,
-                          ),
-                        ),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(20.0),
-                        ),
-                      ),
-                      validator: (value) {
-                        return login_controller.ValidatePassword(value!);
-                      },
-                    )),
-                Container(
-                  alignment: Alignment.centerRight,
-                  child: TextButton(
-                    onPressed: () {
-                      Navigator.pushAndRemoveUntil(
-                          context,
-                          MaterialPageRoute(builder: (context) => ForgotPage()),
-                          (route) => false);
-                    },
-                    child: const Text("Forgot Password?"),
-                  ),
-                ),
-                const SizedBox(height: 5.0),
-                SizedBox(
-                  height: 50.0,
-                  width: double.infinity,
-                  child: ElevatedButton(
+                  TextButton(
                       onPressed: () {
-                        login_controller.checkLogin();
-                        // check internet, then login
-                        if (login_controller.isformValidated == true) {
-                          checkInternetConnection();
-                        }
+                        // Navigator.pushAndRemoveUntil(
+                        //     context,
+                        //     MaterialPageRoute(
+                        //         builder: (context) => SignupPage()),
+                        //     (route) => false);
+                        Get.to(()=> SignupPage());
                       },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.orange,
-                        side: const BorderSide(color: Colors.white),
-                        shape: const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(20)),
-                        ),
-                      ),
-                      child: Container(
-                        margin: const EdgeInsets.only(left: 8.0),
-                        child: const Text(
-                          "Login",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 18.0,
-                              color: Colors.black),
-                        ),
-                      )),
-                ),
-                SizedBox(height: 20.0),
-                const Align(
-                  alignment: Alignment.center,
-                  child: Text(
-                    "OR",
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                ),
-                Container(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Text(
-                        "Dont have an account?",
+                      child: const Text("Sign up"))
+                ],
+              ),
+              Divider(
+                thickness: 1.0,
+              ),
+              SizedBox(height: 20.0),
+              SizedBox(
+                width: double.infinity,
+                height: 50.0,
+                child: ElevatedButton.icon(
+                    onPressed: () async {
+                      await googleSignIn();
+                    },
+                    icon: const FaIcon(
+                      FontAwesomeIcons.google,
+                      color: Colors.red,
+                    ),
+                    label: Container(
+                      margin: const EdgeInsets.only(left: 8.0),
+                      child: const Text(
+                        "Continue with Google",
                         style: TextStyle(
-                          fontSize: 14,
-                        ),
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16.0,
+                            color: Colors.black),
                       ),
-                      TextButton(
-                          onPressed: () {
-                            Navigator.pushAndRemoveUntil(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => SignupPage()),
-                                (route) => false);
-                          },
-                          child: const Text("Sign up"))
-                    ],
-                  ),
-                ),
-                Divider(
-                  thickness: 1.0,
-                ),
-                SizedBox(height: 20.0),
-                SizedBox(
-                  width: double.infinity,
-                  height: 50.0,
-                  child: ElevatedButton.icon(
-                      onPressed: () async {
-                        await googleSignIn();
-                      },
-                      icon: const FaIcon(
-                        FontAwesomeIcons.google,
-                        color: Colors.red,
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.white,
+                      side: BorderSide(color: Colors.grey),
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(20)),
                       ),
-                      label: Container(
-                        margin: const EdgeInsets.only(left: 8.0),
-                        child: const Text(
-                          "Continue with Google",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16.0,
-                              color: Colors.black),
-                        ),
-                      ),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.white,
-                        side: BorderSide(color: Colors.grey),
-                        shape: const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(20)),
-                        ),
-                      )),
-                ),
-              ],
-            ),
+                    )),
+              ),
+            ],
           ),
         ),
       ),

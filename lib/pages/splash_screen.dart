@@ -1,9 +1,5 @@
 
-
-
 // ignore_for_file: prefer_const_constructors, unrelated_type_equality_checks
-
-
 
 import 'dart:async';
 
@@ -54,15 +50,16 @@ class _SplashScreenState extends State<SplashScreen> {
           children: const [
             Padding(
               padding: EdgeInsets.all(20.0),
-              child: Image(image: AssetImage("images/furniture.png"),
+              child: Image(image: AssetImage("images/splsh_image.png"),
               fit: BoxFit.cover, height: 200,
               ),
             ),
-
-            Text("AR Furniture App",
-              style: TextStyle(fontWeight:FontWeight.bold, color: Colors.red, fontSize: 25)
+            SizedBox(height: 10.0,),
+            Text("Augmented Reality",
+            textAlign: TextAlign.center,
+              style: TextStyle(color: Colors.red, fontSize: 28.0, fontWeight: FontWeight.bold, fontFamily: 'customFont') 
             ),
-            SizedBox(height: 20),
+            SizedBox(height: 30),
             SpinKitSpinningCircle(
               color: Colors.yellow, 
             ),

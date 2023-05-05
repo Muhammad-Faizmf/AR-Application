@@ -34,6 +34,11 @@ class _OrderDetailsState extends State<OrderDetails> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.orange[400],
+        centerTitle: true,
+        title: const Text("Your Order"),
+      ),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(

@@ -17,6 +17,7 @@ class _OrdersState extends State<Orders> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.orange[500],
         centerTitle: true,
         title: const Text("Orders"),
       ),
@@ -25,8 +26,10 @@ class _OrdersState extends State<Orders> {
         stream: FirebaseFirestore.instance.collection('orders').where('email', isEqualTo: FirebaseAuth.instance.currentUser!.email).snapshots(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot){
           if(!snapshot.hasData){
-            return const Center(
-              child: CircularProgressIndicator(),
+            return Container(
+              height: MediaQuery.of(context).size.height,
+              alignment: Alignment.center,
+              child: const CircularProgressIndicator(),
             );
           }
           if(snapshot.data!.docs.isEmpty){
@@ -75,80 +78,6 @@ class _OrdersState extends State<Orders> {
                       ),
                   )),
                 ),
-              // for(var i = 0; i < storedoc[x]['items'].length; i++)...[
-            //   Container(
-            //     margin:
-            //     const EdgeInsets.symmetric(horizontal: 15.0, vertical: 10.0),
-            //   padding: const EdgeInsets.all(10.0),
-            //   height: 110,
-            //   decoration: BoxDecoration(
-            //      boxShadow: [
-            //       BoxShadow(
-            //         color: Colors.black.withOpacity(0.09),
-            //         blurRadius: 20.0
-            //       )
-            //     ],
-            //     color: Colors.white, borderRadius: BorderRadius.circular(10.0)),
-            //   child: Row(
-            //     children: [
-            //       const SizedBox(width: 10.0),
-            //       Container(
-            //         height: 90.0,
-            //         width: 90.0,
-            //         margin: const EdgeInsets.only(right: 15.0),
-            //         child: CachedNetworkImage(
-            //           imageUrl:storedoc[x]['items'][i]['image'],
-            //           placeholder: (context, url) => const Center(child: SpinKitFadingCircle(
-            //             color: Colors.red, 
-            //           ),),
-            //           errorWidget: (context, url, error) => const Icon(Icons.error),
-            //           fit: BoxFit.cover,
-            //       )
-            //       ),
-            //       Padding(
-            //         padding: const EdgeInsets.symmetric(vertical: 6.0, horizontal: 6.0),
-            //         child: Column(
-            //           crossAxisAlignment: CrossAxisAlignment.start,
-            //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            //           children: [
-            //             SizedBox(
-            //               width: 120.0,
-            //               child: Text(
-            //                 storedoc[x]['items'][i]['name'].toString(),
-            //                 overflow: TextOverflow.ellipsis,
-            //                 style: const TextStyle(
-            //                     fontSize: 18.0,
-            //                     fontWeight: FontWeight.bold,
-            //                     color: Color(0xff475269)
-            //                   ),
-            //               ),
-            //             ),
-            //             Text(
-            //               storedoc[x]['items'][i]['price'].toString(),
-            //               style: const TextStyle(
-            //                 fontSize: 18.0,
-            //                 fontWeight: FontWeight.bold,
-            //                 color: Colors.redAccent),
-            //             ),
-                        
-                         
-            //           ],
-            //         ),
-            //       ),
-            //       const Spacer(),
-            //       Container(
-            //         margin: const EdgeInsets.all(7.0),
-            //         alignment: Alignment.bottomRight,
-            //         child: Text(
-            //           "Quantity: ${storedoc[x]['items'][i]['quantity']}",
-            //           style: const TextStyle(fontSize: 15.0),
-            //         ),
-            //       )
-            //     ],
-            //   ),
-            // )
-            // ],
-            
             ],
          ],
     );

@@ -77,19 +77,6 @@ class _MyDrawerState extends State<MyDrawer> {
               Get.to(()=>const Orders());
             },
           ),
-          // ListTile(
-          //   leading: const Icon(
-          //     Icons.home,
-          //     size: 28.0,
-          //   ),
-          //   title: const Text(
-          //     "Page 1",
-          //     style: TextStyle(fontSize: 20.0),
-          //   ),
-          //   onTap: () {
-          //     print("Go to page 2");
-          //   },
-          // ),
           Expanded(
             flex: 1,
             child: Padding(

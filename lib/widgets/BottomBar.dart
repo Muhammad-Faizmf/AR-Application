@@ -42,15 +42,15 @@ class _BottomBarState extends State<BottomBar> {
           .where('name', isEqualTo: widget.name)
           .get()
           .then((value) => {
-                if (value.docs.isNotEmpty)
-                  {cartcontroller.isAlreadyAvailable.value = true}
-                else
-                  {cartcontroller.isAlreadyAvailable.value = false}
-              });
-    } catch (e) {
-      print("Error: $e");
-    }
-  }
+            if (value.docs.isNotEmpty)
+              {cartcontroller.isAlreadyAvailable.value = true}
+            else
+              {cartcontroller.isAlreadyAvailable.value = false}
+          });
+          } catch (e) {
+            print("Error: $e");
+          }
+        }
 
   @override
   Widget build(BuildContext context) {
@@ -103,7 +103,7 @@ class _BottomBarState extends State<BottomBar> {
                       });
                       cartcontroller.addPrice(widget.price.toString(),
                           itemcontroller.itemquanity.value);
-                      Get.snackbar("Product", "${widget.name} added Sucessfully", snackPosition: SnackPosition.TOP, duration: Duration(seconds: 2));
+                      Get.snackbar("Product", "${widget.name} added Sucessfully", snackPosition: SnackPosition.TOP, duration: Duration(seconds: 1));
                       // add cart items length
                       cartcontroller.cartLength.value =
                         cartcontroller.cartLength.value + 1;

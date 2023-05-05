@@ -137,6 +137,7 @@ class _ProductDescriptionState extends State<ProductDescription> {
               ],
             ),
           ),
+          SizedBox(height: 10.0,)
         ],
       ),
       bottomNavigationBar: BottomBar(
