@@ -1,12 +1,10 @@
-
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
 import 'package:login_flutter/widgets/SearchBar.dart';
 
-
 class Header extends StatefulWidget {
-  const Header({ Key? key }) : super(key: key);
+  const Header({Key? key}) : super(key: key);
 
   @override
   _HeaderState createState() => _HeaderState();
@@ -17,7 +15,7 @@ class _HeaderState extends State<Header> {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 10.0),
-      child:Column(
+      child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
@@ -37,11 +35,8 @@ class _HeaderState extends State<Header> {
           Center(
             child: Text(
               "Get unique furniture for your home",
-              style: TextStyle(
-                fontSize: 15.0,
-                color: Colors.black45
-              ),
-              ),
+              style: TextStyle(fontSize: 15.0, color: Colors.black45),
+            ),
           ),
           SearchBar()
         ],

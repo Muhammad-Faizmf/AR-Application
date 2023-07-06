@@ -10,6 +10,7 @@ import 'package:login_flutter/cartPages/Orders.dart';
 import 'package:login_flutter/getx/cartController.dart';
 import 'package:login_flutter/getx/login_controller.dart';
 import 'package:login_flutter/pages/login_page.dart';
+import 'package:login_flutter/widgets/showdialog.dart';
 
 class MyDrawer extends StatefulWidget {
   const MyDrawer({Key? key}) : super(key: key);
@@ -31,9 +32,9 @@ class _MyDrawerState extends State<MyDrawer> {
     await FirebaseAuth.instance.signOut();
     Future.delayed(const Duration(seconds: 3), () {
       Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(builder: (context) => const LoginPage()),
-        (route) => false);
+          context,
+          MaterialPageRoute(builder: (context) => const LoginPage()),
+          (route) => false);
     });
   }
 
@@ -56,8 +57,9 @@ class _MyDrawerState extends State<MyDrawer> {
                   ),
                   const SizedBox(height: 10.0),
                   Text(
-                   getxStorage.read("email"),
-                  style: const TextStyle(fontSize: 20.0),
+                    getxStorage.read("email"),
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(fontSize: 20.0),
                   ),
                 ],
               ),
@@ -74,7 +76,39 @@ class _MyDrawerState extends State<MyDrawer> {
             ),
             onTap: () {
               Navigator.pop(context);
-              Get.to(()=>const Orders());
+              Get.to(() => const Orders());
+            },
+          ),
+          ListTile(
+            leading: const Icon(
+              Icons.contact_mail,
+              size: 28.0,
+            ),
+            title: const Text(
+              "Contact",
+              style: TextStyle(fontSize: 20.0),
+            ),
+            onTap: () {
+              Constant().showAlertDialog(
+                  "You can Contact us regarding any issue by faizanmushtaq@gmail.com.",
+                  "Contact",
+                  context);
+            },
+          ),
+          ListTile(
+            leading: const Icon(
+              Icons.contacts,
+              size: 28.0,
+            ),
+            title: const Text(
+              "About Us",
+              style: TextStyle(fontSize: 20.0),
+            ),
+            onTap: () {
+              Constant().showAlertDialog(
+                  "Welcome to our AR Furniture app! We are Hamza and Faizan, the creators behind this innovative platform with our combined passion for technology and design, embarked on this journey to simplify and enhance the furniture shopping experience. We believe that every individual should have the opportunity to create their dream space effortlessly.",
+                  "About Us",
+                  context);
             },
           ),
           Expanded(
@@ -103,7 +137,6 @@ class _MyDrawerState extends State<MyDrawer> {
                     await googlesignIn.signOut();
                     login_controller.isformValidated = false;
                     print("Logout");
-
                   },
                 ),
               ),
@@ -116,6 +149,7 @@ class _MyDrawerState extends State<MyDrawer> {
 
   showDialog() {
     Get.defaultDialog(
+        barrierDismissible: false,
         title: "",
         content: Column(children: const [
           SpinKitFadingCircle(

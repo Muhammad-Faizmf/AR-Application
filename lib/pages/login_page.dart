@@ -36,11 +36,8 @@ class _LoginPageState extends State<LoginPage> {
       // Storing a user id while logging
       await storage.write(key: "uid", value: credential.user!.uid);
       getxStorage.write("email", credential.user!.email.toString());
-
-      // print("user email: ${credential.user!.email!}");
-
+      // show dialog after login
       showDialog();
-      print("login successfully");
       getLogin();
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
@@ -80,8 +77,8 @@ class _LoginPageState extends State<LoginPage> {
         final googleAccountAuthentication = await signInAccount.authentication;
         try {
           final credential = GoogleAuthProvider.credential(
-            accessToken: googleAccountAuthentication.accessToken,
-            idToken: googleAccountAuthentication.idToken);
+              accessToken: googleAccountAuthentication.accessToken,
+              idToken: googleAccountAuthentication.idToken);
           UserCredential user = await auth.signInWithCredential(credential);
           showDialog();
           getLogin();
@@ -275,7 +272,7 @@ class _LoginPageState extends State<LoginPage> {
                         //     MaterialPageRoute(
                         //         builder: (context) => SignupPage()),
                         //     (route) => false);
-                        Get.to(()=> SignupPage());
+                        Get.to(() => SignupPage());
                       },
                       child: const Text("Sign up"))
                 ],
@@ -323,6 +320,7 @@ class _LoginPageState extends State<LoginPage> {
   // Showing Dialog When login button is Tapped
   showDialog() {
     Get.defaultDialog(
+        barrierDismissible: false,
         title: "",
         content: Column(children: const [
           SpinKitFadingCircle(

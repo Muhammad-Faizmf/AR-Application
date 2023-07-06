@@ -1,10 +1,7 @@
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class ForgotPasswdController extends GetxController{
-
-
+class ForgotPasswdController extends GetxController {
   GlobalKey<FormState> forgotpawd_key = GlobalKey<FormState>();
 
   late TextEditingController EmailController;
@@ -18,29 +15,24 @@ class ForgotPasswdController extends GetxController{
     EmailController = TextEditingController();
   }
 
-
-  String? ValidateEmail(String value){
-    if(value.isEmpty){
+  String? ValidateEmail(String value) {
+    if (value.isEmpty) {
       return "Please enter email";
     }
-    if(!value.contains("@gmail.com"))
-    {
+    if (!value.contains("@gmail.com")) {
       return "Enter valid email";
     }
     return null;
   }
 
-  void checkForgotPassword(){
+  void checkForgotPassword() {
     final isValid = forgotpawd_key.currentState!.validate();
-    if(!isValid)
-    {
+    if (!isValid) {
       return;
-    }
-    else {
+    } else {
       forgotpawd_key.currentState!.save();
       email.value = EmailController.text;
       isformValidated = true;
     }
   }
-
 }

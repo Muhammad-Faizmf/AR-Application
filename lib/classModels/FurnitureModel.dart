@@ -1,5 +1,4 @@
-
-class Furniture{
+class Furniture {
   // String id;
   String name;
   String image;
@@ -9,21 +8,19 @@ class Furniture{
   bool isTrending;
   String render_image;
 
-  Furniture({
-    // required this.id,
-    required this.name,
-    required this.image,
-    required this.description,
-    required this.price,
-    required this.category,
-    required this.isTrending,
-    required this.render_image
-  });
-
+  Furniture(
+      {
+      // required this.id,
+      required this.name,
+      required this.image,
+      required this.description,
+      required this.price,
+      required this.category,
+      required this.isTrending,
+      required this.render_image});
 }
 
-  final List<Furniture> furniture_list = [
-
+final List<Furniture> furniture_list = [
   //   Furniture(name: "Lowpoly Chair", description: "chair is a type of seat, typically designed for one person and consisting of one or more legs, a flat or slightly angled seat and a back-rest.", price: 4000, category: "chair", isTrending: false, image: "images/chair1.jpg", render_image: "3d_images/chair1.glb"),
 
   //   Furniture(name: "Old Wooden Table", description: "The table is a basic piece of household furniture. It generally consists of a flat top that is supported by either a set of legs, pillars, or trestles.", price: 5000, category: "table", isTrending: false, image: "images/table1.jpg", render_image: "3d_images/table1.glb"),
@@ -71,5 +68,4 @@ class Furniture{
   //   Furniture(name: "Desk 3", description: "It is a kind of furniture with a flat or sloping surface and typically with drawers, at which one can read, write, or do other work.", price: 3000, category: "desk", isTrending: false, image: "images/desk3.jpg", render_image: "3d_images/desk3.glb"),
 
   //   Furniture(name: "School Desk", description: "It is a kind of furniture with a flat or sloping surface and typically with drawers, at which one can read, write, or do other work.", price: 2000, category: "desk", isTrending: false, image: "images/desk4.jpg", render_image: "3d_images/desk4.glb"),
-
-  ];
+];

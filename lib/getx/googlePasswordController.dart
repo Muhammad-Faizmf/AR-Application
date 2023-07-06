@@ -1,9 +1,7 @@
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-
-class GoogleSigninPassword extends GetxController{
+class GoogleSigninPassword extends GetxController {
   var ispasswordHidden = true.obs;
   var isformValidated = false;
 
@@ -12,43 +10,40 @@ class GoogleSigninPassword extends GetxController{
 
   final GlobalKey<FormState> googleSignInPassword_key = GlobalKey<FormState>();
 
-  late TextEditingController emailController, passwordController,confPasswordController;
+  late TextEditingController emailController,
+      passwordController,
+      confPasswordController;
 
-   @override
+  @override
   void onInit() {
     passwordController = TextEditingController();
     confPasswordController = TextEditingController();
     super.onInit();
   }
 
-   validatePassword(String value){
-    if(value.isEmpty){
+  validatePassword(String value) {
+    if (value.isEmpty) {
       return "Please enter Password";
-    }
-    else if(value.length < 8){
+    } else if (value.length < 8) {
       return "Password length should be 8.";
     }
   }
 
-   validateConfPassword(String value){
-    if(value.isEmpty){
+  validateConfPassword(String value) {
+    if (value.isEmpty) {
       return "Please enter Confirm Password";
-    }
-    else if(value.length < 8){
+    } else if (value.length < 8) {
       return "Password length should be 8.";
-    }
-    else if(passwordController.text != confPasswordController.text){
+    } else if (passwordController.text != confPasswordController.text) {
       return "passwords do not match";
     }
   }
 
-  void checkSignInPassword(){
+  void checkSignInPassword() {
     final isValid = googleSignInPassword_key.currentState!.validate();
-    if(!isValid)
-    {
+    if (!isValid) {
       return;
-    }
-    else{
+    } else {
       // Get.snackbar('Succuesful', "Account Created Successfully", snackPosition: SnackPosition.BOTTOM,);
       googleSignInPassword_key.currentState!.save();
       password.value = passwordController.text;
@@ -56,6 +51,4 @@ class GoogleSigninPassword extends GetxController{
       isformValidated = true;
     }
   }
-
-
 }

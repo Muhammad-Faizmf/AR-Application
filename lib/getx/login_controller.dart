@@ -1,10 +1,7 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class LoginController extends GetxController{
-
+class LoginController extends GetxController {
   var ispasswordHidden = true.obs;
   var isformValidated = false;
   var isLoginClicked = false;
@@ -17,7 +14,6 @@ class LoginController extends GetxController{
   var email = "".obs;
   var password = "".obs;
 
-
   @override
   void onInit() {
     super.onInit();
@@ -25,36 +21,29 @@ class LoginController extends GetxController{
     PasswordController = TextEditingController();
   }
 
-
-  String? ValidateEmail(String value){
-     if(value.isEmpty){
+  String? ValidateEmail(String value) {
+    if (value.isEmpty) {
       return "Please enter email";
-    }
-    else if(!value.contains("@gmail.com"))
-    {
+    } else if (!value.contains("@gmail.com")) {
       return "Enter valid email";
     }
     return null;
   }
 
-  String? ValidatePassword(String value){
-    if(value.isEmpty){
+  String? ValidatePassword(String value) {
+    if (value.isEmpty) {
       return "Please enter Password";
-    }
-    else if(value.length < 8)
-    {
+    } else if (value.length < 8) {
       return "Password length must be 8 ";
     }
     return null;
   }
 
-  void checkLogin(){
+  void checkLogin() {
     final isValid = loginkey.currentState!.validate();
-    if(!isValid)
-    {
+    if (!isValid) {
       return;
-    }
-    else {
+    } else {
       // Get.snackbar('Succuesful', "Login Successful", snackPosition: SnackPosition.BOTTOM,);
       loginkey.currentState!.save();
       email.value = EmailController.text;
@@ -63,5 +52,4 @@ class LoginController extends GetxController{
       isLoginClicked = true;
     }
   }
-
 }

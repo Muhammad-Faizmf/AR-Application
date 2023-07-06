@@ -1,4 +1,3 @@
-
 // ignore_for_file: avoid_function_literals_in_foreach_calls
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -13,42 +12,52 @@ class BuyProduct extends StatelessWidget {
 
   final buycontroller = Get.put(BuyController());
   final cartcontroller = Get.put(CartController());
+  String? selectedCity;
 
-  addOrdersToFirebase(String fullname, String address, String mblNo, String city) async {
-     var cartItemList = [];
+  addOrdersToFirebase(
+      String fullname, String address, String mblNo, String city) async {
+    var cartItemList = [];
 
-     await FirebaseFirestore.instance.collection('users').doc(FirebaseAuth.instance.currentUser!.email).collection('cartitems').get().then((QuerySnapshot? snapshot){
-       snapshot!.docs.forEach((element) {
-         cartItemList.add({
-           "name" : element['name'],
-           'price' : element['price'],
-           'image' : element['image'],
-           'quantity' : element['quantity']
-         });
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(FirebaseAuth.instance.currentUser!.email)
+        .collection('cartitems')
+        .get()
+        .then((QuerySnapshot? snapshot) {
+      snapshot!.docs.forEach((element) {
+        cartItemList.add({
+          "name": element['name'],
+          'price': element['price'],
+          'image': element['image'],
+          'quantity': element['quantity']
         });
-     });
+      });
+    });
     print("cart items ${cartItemList[0]['name']}");
     await FirebaseFirestore.instance.collection('orders').add({
-      "email" : FirebaseAuth.instance.currentUser!.email, 
-      "fullname" : fullname,
-      "address" : address,
-      "mobile_number" : mblNo,
-      "city" : city,
+      "email": FirebaseAuth.instance.currentUser!.email,
+      "fullname": fullname,
+      "address": address,
+      "mobile_number": mblNo,
+      "city": city,
       "total": cartcontroller.cartitemTotalCost.value,
-      "items" : cartItemList,
-      "order_status" : "PENDING"
+      "items": cartItemList,
+      "order_status": "PENDING"
     });
     cartItemList.clear();
   }
 
   deleteAllcartItems() async {
-    var collection = FirebaseFirestore.instance.collection('users').doc(FirebaseAuth.instance.currentUser!.email).collection('cartitems');
+    var collection = FirebaseFirestore.instance
+        .collection('users')
+        .doc(FirebaseAuth.instance.currentUser!.email)
+        .collection('cartitems');
     var snapshots = await collection.get();
     for (var doc in snapshots.docs) {
-    await doc.reference.delete();
-    cartcontroller.cartLength.value = 0;
-    cartcontroller.cartitemTotalCost.value = 0;
-  }
+      await doc.reference.delete();
+      cartcontroller.cartLength.value = 0;
+      cartcontroller.cartitemTotalCost.value = 0;
+    }
   }
 
   @override
@@ -144,63 +153,84 @@ class BuyProduct extends StatelessWidget {
             decoration: BoxDecoration(
                 color: Colors.white, borderRadius: BorderRadius.circular(10.0)),
             width: 370,
-            child: Obx(() => TextFormField(
-               autovalidateMode: buycontroller.disableValidtion.value
-                  ? AutovalidateMode.disabled
-                  : AutovalidateMode.onUserInteraction,
-              controller: buycontroller.cityController,
-              style: const TextStyle(fontSize: 18.0),
-              validator: (value) {
-                return buycontroller.validateCity(value!);
-              },
+            child: DropdownButtonFormField<String>(
               decoration: const InputDecoration(
-                  border: InputBorder.none,
-                  hintText: "City",
-                  hintStyle: TextStyle(fontSize: 18.0)),
-            )),
+                hintText: "Selecy City",
+                border: InputBorder.none,
+              ),
+              value: selectedCity,
+              onChanged: (newValue) {
+                buycontroller.selectedCity.value = newValue.toString();
+                print(buycontroller.selectedCity.value);
+              },
+              validator: (value) {
+                if (value == null) {
+                  return "City must be selected";
+                }
+                return null;
+              },
+              items: buycontroller.cities.map((String city) {
+                return DropdownMenuItem<String>(
+                  value: city,
+                  child: Text(city),
+                );
+              }).toList(),
+            ),
           ),
           const SizedBox(height: 20.0),
-          Obx(()=>InkWell(
-             onTap: cartcontroller.cartLength.value != 0 ?  () async {
-              buycontroller.orderNowClick();
-              if (buycontroller.isformvalidated == true) {
-                await addOrdersToFirebase(buycontroller.name.value, buycontroller.address.value, buycontroller.mobileNo.value, buycontroller.city.value);
-                Get.defaultDialog(
-                  title: "Product",
-                  middleText: "Your order has been placed successfully and you will be contacted soon by the admin.",
-                  barrierDismissible: false,
-                  confirm: ElevatedButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                      buycontroller.disableValidtion.value = true;
-                      buycontroller.nameController.clear();
-                      buycontroller.mobileNoController.clear();
-                      buycontroller.addressController.clear();
-                      buycontroller.cityController.clear();
-                      buycontroller.isformvalidated = false;
-                      deleteAllcartItems();
-                    },
-                    child: const Text("OK")),
-                );
-              }
-            } : null,
-            child: Container(
-              width: 370,
-              margin: const EdgeInsets.only(left: 20.0, right: 15.0),
-              padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 17.0),
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                  color: cartcontroller.cartLength.value != 0 ? const Color(0xffff7466) : Colors.grey,
-                  borderRadius: BorderRadius.circular(10.0)),
-              child: Text(
-                "Order Now",
-                style: TextStyle(
-                  fontSize: 18.0,
-                  fontWeight: FontWeight.bold,
-                  color:cartcontroller.cartLength.value != 0 ? Colors.white : Colors.grey[300]),
-              ),
-            ),
-          )),
+          Obx(() => InkWell(
+                onTap: cartcontroller.cartLength.value != 0
+                    ? () async {
+                        buycontroller.orderNowClick();
+                        if (buycontroller.isformvalidated == true) {
+                          await addOrdersToFirebase(
+                              buycontroller.name.value,
+                              buycontroller.address.value,
+                              buycontroller.mobileNo.value,
+                              buycontroller.selectedCity.value);
+                          Get.defaultDialog(
+                            title: "Product",
+                            middleText:
+                                "Your order has been placed successfully and you will be contacted soon by the admin.",
+                            barrierDismissible: false,
+                            confirm: ElevatedButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                  buycontroller.disableValidtion.value = true;
+                                  buycontroller.nameController.clear();
+                                  buycontroller.mobileNoController.clear();
+                                  buycontroller.addressController.clear();
+                                  buycontroller.selectedCity.value = "";
+                                  buycontroller.isformvalidated = false;
+                                  deleteAllcartItems();
+                                },
+                                child: const Text("OK")),
+                          );
+                        }
+                      }
+                    : null,
+                child: Container(
+                  width: 370,
+                  margin: const EdgeInsets.only(left: 20.0, right: 15.0),
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 20.0, vertical: 17.0),
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                      color: cartcontroller.cartLength.value != 0
+                          ? const Color(0xffff7466)
+                          : Colors.grey,
+                      borderRadius: BorderRadius.circular(10.0)),
+                  child: Text(
+                    "Order Now",
+                    style: TextStyle(
+                        fontSize: 18.0,
+                        fontWeight: FontWeight.bold,
+                        color: cartcontroller.cartLength.value != 0
+                            ? Colors.white
+                            : Colors.grey[300]),
+                  ),
+                ),
+              )),
           const SizedBox(
             height: 20.0,
           ),

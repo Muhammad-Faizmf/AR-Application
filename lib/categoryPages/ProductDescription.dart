@@ -32,7 +32,6 @@ class ProductDescription extends StatefulWidget {
 }
 
 class _ProductDescriptionState extends State<ProductDescription> {
-
   final controller = Get.put(ItemQuantity());
 
   @override
@@ -106,9 +105,9 @@ class _ProductDescriptionState extends State<ProductDescription> {
                         //  SizedBox(width: 25.0),
                         Container(
                             margin: EdgeInsets.symmetric(horizontal: 10.0),
-                            child: Obx(() => controller.itemquanity.value <= 9 ? Text("0${controller.itemquanity.toString()}"
-                            ) : Text(controller.itemquanity.toString())
-                            )),
+                            child: Obx(() => controller.itemquanity.value <= 9
+                                ? Text("0${controller.itemquanity.toString()}")
+                                : Text(controller.itemquanity.toString()))),
                         InkWell(
                           borderRadius: BorderRadius.circular(20.0),
                           onTap: () {
@@ -137,15 +136,16 @@ class _ProductDescriptionState extends State<ProductDescription> {
               ],
             ),
           ),
-          SizedBox(height: 10.0,)
+          SizedBox(
+            height: 10.0,
+          )
         ],
       ),
       bottomNavigationBar: BottomBar(
-          name: widget.title,
-          image: widget.ImagePath,
-          price: widget.price,
-          ),
+        name: widget.title,
+        image: widget.ImagePath,
+        price: widget.price,
+      ),
     );
   }
-  
 }

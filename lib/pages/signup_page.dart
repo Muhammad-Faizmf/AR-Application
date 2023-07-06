@@ -1,5 +1,3 @@
-
-
 // ignore_for_file: unnecessary_null_comparison, use_build_context_synchronously
 
 import 'package:connectivity_plus/connectivity_plus.dart';
@@ -11,87 +9,77 @@ import 'package:login_flutter/getx/googlePasswordController.dart';
 import 'package:login_flutter/getx/signup_controller.dart';
 import 'package:login_flutter/pages/login_page.dart';
 
-
 class SignupPage extends StatefulWidget {
-  const SignupPage ({ Key? key }) : super(key: key);
+  const SignupPage({Key? key}) : super(key: key);
 
   @override
   _SignupPageState createState() => _SignupPageState();
 }
 
 class _SignupPageState extends State<SignupPage> {
-
   final signup_controller = Get.put(SignUpController());
   final controller = Get.put(GoogleSigninPassword());
-  
 
   Future createUserAccount() async {
     try {
-      UserCredential usercredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
-        email: signup_controller.email.value, password: signup_controller.password.value);
-        
-        showDialog();
-        Future.delayed(const Duration(seconds: 3),(){
-          Navigator.pushAndRemoveUntil(
-            context, MaterialPageRoute(
-              builder: (context) => const LoginPage()),
-            (route) => false
-          );
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+      UserCredential usercredential = await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(
+              email: signup_controller.email.value,
+              password: signup_controller.password.value);
+
+      showDialog();
+      Future.delayed(const Duration(seconds: 3), () {
+        Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (context) => const LoginPage()),
+            (route) => false);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30)),
               backgroundColor: Colors.orange,
               content: const Text(
                 "Account created successfully. Please Login.",
-                style: TextStyle(
-                  fontSize: 18
-                ),
-              )
-              ),
-          );
-        });
+                style: TextStyle(fontSize: 18),
+              )),
+        );
+      });
     } on FirebaseAuthException catch (e) {
-      if(e.code == "email-already-in-use"){
+      if (e.code == "email-already-in-use") {
         signup_controller.passwordController.clear();
         signup_controller.confPasswordController.clear();
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
-            backgroundColor: Colors.red,
-            content: const Text(
-              "Email already exists. Try another one.",
-              style: TextStyle(
-                fontSize: 18,
-              ),
-              ),
-            )
-        );
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+          backgroundColor: Colors.red,
+          content: const Text(
+            "Email already exists. Try another one.",
+            style: TextStyle(
+              fontSize: 18,
+            ),
+          ),
+        ));
       }
     }
   }
 
-
   checkInternetConnection() async {
-
     var connectivityResult = await (Connectivity().checkConnectivity());
 
-    if(connectivityResult == ConnectivityResult.wifi ||
-    connectivityResult == ConnectivityResult.mobile) {
+    if (connectivityResult == ConnectivityResult.wifi ||
+        connectivityResult == ConnectivityResult.mobile) {
       createUserAccount();
-    }
-    else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
-          backgroundColor: Colors.red,
-          content: const Text(
-            "Please check your internet connection.",
-              style: TextStyle(
-              fontSize: 18,
-            ),
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+        backgroundColor: Colors.red,
+        content: const Text(
+          "Please check your internet connection.",
+          style: TextStyle(
+            fontSize: 18,
           ),
-        )
-        );
+        ),
+      ));
     }
   }
 
@@ -121,17 +109,23 @@ class _SignupPageState extends State<SignupPage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                 Container(
+                Container(
                   height: 200.0,
                   margin: const EdgeInsets.symmetric(vertical: 10.0),
                   child: const Image(
-                 image: AssetImage("images/welcome_image.jpg"),
-                 // fit: BoxFit.cover,
+                    image: AssetImage("images/welcome_image.jpg"),
+                    // fit: BoxFit.cover,
                   ),
-                  ),
-                  const Text("Welcome Back", style: TextStyle(fontSize: 30.0, fontWeight: FontWeight.bold)),
-                  const Text("Create your account to start your journey.", style: TextStyle(fontSize: 20.0), textAlign: TextAlign.center,),
-                  const SizedBox(height: 15.0),
+                ),
+                const Text("Welcome Back",
+                    style:
+                        TextStyle(fontSize: 30.0, fontWeight: FontWeight.bold)),
+                const Text(
+                  "Create your account to start your journey.",
+                  style: TextStyle(fontSize: 20.0),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 15.0),
                 TextFormField(
                   keyboardType: TextInputType.emailAddress,
                   controller: signup_controller.emailController,
@@ -139,60 +133,58 @@ class _SignupPageState extends State<SignupPage> {
                     return signup_controller.validateEmail(value!);
                   },
                   decoration: InputDecoration(
-                    hintText: "E-Mail",
-                    label: const Text("E-Mail"),
-                    prefixIcon: const Icon(Icons.person_outline_rounded),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(20.0))),
+                      hintText: "E-Mail",
+                      label: const Text("E-Mail"),
+                      prefixIcon: const Icon(Icons.person_outline_rounded),
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(20.0))),
                 ),
                 const SizedBox(height: 20.0),
                 Obx(() => TextFormField(
-                  keyboardType: TextInputType.visiblePassword,
-                  obscureText: signup_controller.ispasswordHidden.value,
-                  controller: signup_controller.passwordController,
-                  validator: (value) {
-                    return signup_controller.validatePassword(value!);
-                  },
-                  decoration: InputDecoration(
-                    hintText: "Password",
-                    label: const Text("Password"),
-                    prefixIcon: const Icon(Icons.lock_outline_rounded),
-                    suffixIcon: IconButton(
-                      onPressed: () {
-                        signup_controller.ispasswordHidden.value =
-                          !signup_controller.ispasswordHidden.value;
+                      keyboardType: TextInputType.visiblePassword,
+                      obscureText: signup_controller.ispasswordHidden.value,
+                      controller: signup_controller.passwordController,
+                      validator: (value) {
+                        return signup_controller.validatePassword(value!);
                       },
-                      icon: Icon(
-                        signup_controller.ispasswordHidden.value
-                          ? Icons.visibility
-                          : Icons.visibility_off,
-                          color: Colors.grey,
+                      decoration: InputDecoration(
+                        hintText: "Password",
+                        label: const Text("Password"),
+                        prefixIcon: const Icon(Icons.lock_outline_rounded),
+                        suffixIcon: IconButton(
+                          onPressed: () {
+                            signup_controller.ispasswordHidden.value =
+                                !signup_controller.ispasswordHidden.value;
+                          },
+                          icon: Icon(
+                            signup_controller.ispasswordHidden.value
+                                ? Icons.visibility
+                                : Icons.visibility_off,
+                            color: Colors.grey,
+                          ),
+                        ),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(20.0),
+                        ),
                       ),
-                    ),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(20.0),
-                    ),
-                  ),
-                )
-                  ),
+                    )),
                 const SizedBox(height: 20.0),
                 Obx(() => TextFormField(
-                  keyboardType: TextInputType.visiblePassword,
-                  obscureText: signup_controller.ispasswordHidden.value,
-                  controller: signup_controller.confPasswordController,
-                  validator: (value) {
-                    return signup_controller.validateConfPassword(value!);
-                  },
-                  decoration: InputDecoration(
-                    hintText: "Confirm Password",
-                    label: const Text("Confirm Password"),
-                    prefixIcon: const Icon(Icons.lock_outline_rounded),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(20.0),
-                    ),
-                  ),
-                )
-                  ),
+                      keyboardType: TextInputType.visiblePassword,
+                      obscureText: signup_controller.ispasswordHidden.value,
+                      controller: signup_controller.confPasswordController,
+                      validator: (value) {
+                        return signup_controller.validateConfPassword(value!);
+                      },
+                      decoration: InputDecoration(
+                        hintText: "Confirm Password",
+                        label: const Text("Confirm Password"),
+                        prefixIcon: const Icon(Icons.lock_outline_rounded),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(20.0),
+                        ),
+                      ),
+                    )),
                 const SizedBox(height: 20.0),
                 SizedBox(
                   width: double.infinity,
@@ -200,7 +192,7 @@ class _SignupPageState extends State<SignupPage> {
                   child: ElevatedButton(
                       onPressed: () {
                         signup_controller.checkSignUP();
-                        if(signup_controller.isformValidated == true){
+                        if (signup_controller.isformValidated == true) {
                           checkInternetConnection();
                         }
                       },
@@ -213,12 +205,14 @@ class _SignupPageState extends State<SignupPage> {
                       ),
                       child: Container(
                         margin: const EdgeInsets.only(left: 8.0),
-                        child: const Text("SIGN UP",
-                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18.0,
-                        color: Colors.black
-                        ),),
-                      )
-                    ),
+                        child: const Text(
+                          "SIGN UP",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18.0,
+                              color: Colors.black),
+                        ),
+                      )),
                 ),
                 const SizedBox(height: 20.0),
                 const Align(
@@ -240,13 +234,12 @@ class _SignupPageState extends State<SignupPage> {
                     TextButton(
                         onPressed: () {
                           Navigator.pushAndRemoveUntil(
-                          context, MaterialPageRoute(
-                            builder: (context) => const LoginPage()),
-                          (route) => false
-                        );
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const LoginPage()),
+                              (route) => false);
                         },
-                        child: const Text("Login")
-                      )
+                        child: const Text("Login"))
                   ],
                 ),
               ],
@@ -256,20 +249,17 @@ class _SignupPageState extends State<SignupPage> {
       ),
     );
   }
-  showDialog(){
+
+  showDialog() {
     Get.defaultDialog(
-      title: "",
-      content: Column(
-        children: const [
+        barrierDismissible: false,
+        title: "",
+        content: Column(children: const [
           SpinKitFadingCircle(
             color: Colors.red,
           ),
           SizedBox(height: 20.0),
           Text("Please Wait...")
-        ]
-      )
-    );
+        ]));
   }
 }
-
-

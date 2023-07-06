@@ -42,15 +42,15 @@ class _BottomBarState extends State<BottomBar> {
           .where('name', isEqualTo: widget.name)
           .get()
           .then((value) => {
-            if (value.docs.isNotEmpty)
-              {cartcontroller.isAlreadyAvailable.value = true}
-            else
-              {cartcontroller.isAlreadyAvailable.value = false}
-          });
-          } catch (e) {
-            print("Error: $e");
-          }
-        }
+                if (value.docs.isNotEmpty)
+                  {cartcontroller.isAlreadyAvailable.value = true}
+                else
+                  {cartcontroller.isAlreadyAvailable.value = false}
+              });
+    } catch (e) {
+      print("Error: $e");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -75,52 +75,55 @@ class _BottomBarState extends State<BottomBar> {
               Text("Rs ${widget.price.toString()}",
                   style:
                       TextStyle(fontWeight: FontWeight.bold, fontSize: 25.0)),
-              Obx(() =>  cartcontroller.isAlreadyAvailable.value  ? ElevatedButton.icon(
-                onPressed: null,
-                label: Text("Add to Cart",
-                    style: TextStyle(
-                        fontSize: 16.0, fontWeight: FontWeight.bold),
-                    ),
-                icon: Icon(CupertinoIcons.cart_badge_plus),
-                style: ButtonStyle(
-                    padding: MaterialStateProperty.all(EdgeInsets.symmetric(
-                        vertical: 12.0, horizontal: 15.0)
-                      )
-                    ),
-              ) : ElevatedButton.icon(
-                    onPressed: () async {
-                      checkItemInCards();
-                      FirebaseFirestore.instance
-                          .collection('users')
-                          .doc(FirebaseAuth.instance.currentUser!.email)
-                          .collection("cartitems")
-                          .doc()
-                          .set({
-                        "name": widget.name,
-                        "image": widget.image,
-                        "price": widget.price.toString(),
-                        "quantity": itemcontroller.itemquanity.value
-                      });
-                      cartcontroller.addPrice(widget.price.toString(),
-                          itemcontroller.itemquanity.value);
-                      Get.snackbar("Product", "${widget.name} added Sucessfully", snackPosition: SnackPosition.TOP, duration: Duration(seconds: 1));
-                      // add cart items length
-                      cartcontroller.cartLength.value =
-                        cartcontroller.cartLength.value + 1;
-                    },
-                    label: Text(
-                      "Add to Cart",
-                      style: TextStyle(
-                          fontSize: 16.0, fontWeight: FontWeight.bold),
-                    ),
-                    icon: Icon(CupertinoIcons.cart_badge_plus),
-                    style: ButtonStyle(
-                        padding: MaterialStateProperty.all(EdgeInsets.symmetric(
-                            vertical: 12.0, horizontal: 15.0)
-                          )
-                        ),
-                  )
-                )
+              Obx(() => cartcontroller.isAlreadyAvailable.value
+                  ? ElevatedButton.icon(
+                      onPressed: null,
+                      label: Text(
+                        "Add to Cart",
+                        style: TextStyle(
+                            fontSize: 16.0, fontWeight: FontWeight.bold),
+                      ),
+                      icon: Icon(CupertinoIcons.cart_badge_plus),
+                      style: ButtonStyle(
+                          padding: MaterialStateProperty.all(
+                              EdgeInsets.symmetric(
+                                  vertical: 12.0, horizontal: 15.0))),
+                    )
+                  : ElevatedButton.icon(
+                      onPressed: () async {
+                        checkItemInCards();
+                        FirebaseFirestore.instance
+                            .collection('users')
+                            .doc(FirebaseAuth.instance.currentUser!.email)
+                            .collection("cartitems")
+                            .doc()
+                            .set({
+                          "name": widget.name,
+                          "image": widget.image,
+                          "price": widget.price.toString(),
+                          "quantity": itemcontroller.itemquanity.value
+                        });
+                        cartcontroller.addPrice(widget.price.toString(),
+                            itemcontroller.itemquanity.value);
+                        Get.snackbar(
+                            "Product", "${widget.name} added Sucessfully",
+                            snackPosition: SnackPosition.TOP,
+                            duration: Duration(seconds: 1));
+                        // add cart items length
+                        cartcontroller.cartLength.value =
+                            cartcontroller.cartLength.value + 1;
+                      },
+                      label: Text(
+                        "Add to Cart",
+                        style: TextStyle(
+                            fontSize: 16.0, fontWeight: FontWeight.bold),
+                      ),
+                      icon: Icon(CupertinoIcons.cart_badge_plus),
+                      style: ButtonStyle(
+                          padding: MaterialStateProperty.all(
+                              EdgeInsets.symmetric(
+                                  vertical: 12.0, horizontal: 15.0))),
+                    ))
             ],
           ),
         ),
