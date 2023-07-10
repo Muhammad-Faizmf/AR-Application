@@ -1,7 +1,8 @@
 // ignore_for_file: avoid_unnecessary_containers
 
 import 'package:flutter/material.dart';
-import 'package:model_viewer_plus/model_viewer_plus.dart';
+import 'package:flutter_model_viewer/flutter_model_viewer.dart';
+import 'package:login_flutter/widgets/gestureOnPlane.dart';
 
 class ViewOnly3DModel extends StatefulWidget {
   final render_image;
@@ -21,17 +22,31 @@ class _ViewOnly3DModelState extends State<ViewOnly3DModel> {
         return true;
       },
       child: Scaffold(
-          body: Container(
-        child: ModelViewer(
-          src: widget.render_image,
-          ar: true,
-          autoRotate: false,
-          cameraControls: true,
-          disableZoom: true,
-          loading: Loading.eager,
-          arScale: ArScale.fixed,
-          arPlacement: ArPlacement.floor,
-        ),
+          body: Stack(
+        children: [
+          ModelViewer(
+            src: widget.render_image,
+            autoRotate: false,
+            autoPlay: false,
+            cameraControls: true,
+            openCache: true,
+          ),
+          Positioned(
+            bottom: 10.0,
+            right: 10.0,
+            child: ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => ObjectGesturesWidget(
+                              imageObject: widget.render_image,
+                            )),
+                  );
+                },
+                child: const Text("View In AR")),
+          )
+        ],
       )),
     );
   }
